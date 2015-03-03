@@ -6,8 +6,8 @@
     Author:      bitpay
     Author URI:  https://bitpay.com
 
-    Version:           2.2.3
-    License:           Copyright 2011-2014 BitPay Inc., MIT License
+    Version:           2.2.4
+    License:           Copyright 2011-2015 BitPay Inc., MIT License
     License URI:       https://github.com/bitpay/woocommerce-plugin/blob/master/LICENSE
     GitHub Plugin URI: https://github.com/bitpay/woocommerce-plugin
  */
@@ -84,7 +84,7 @@ function woocommerce_bitpay_init()
             $this->has_fields         = false;
             $this->order_button_text  = __('Proceed to BitPay', 'bitpay');
             $this->method_title       = 'BitPay';
-            $this->method_description = 'BitPay allows you to accept bitcoin on your WooCommerce store.';
+            $this->method_description = 'BitPay allows you to accept bitcoin payments on your WooCommerce store.';
 
             // Load the settings.
             $this->init_form_fields();
@@ -105,7 +105,7 @@ function woocommerce_bitpay_init()
 
             // Define debugging & informational settings
             $this->debug_php_version    = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
-            $this->debug_plugin_version = '2.2.3';
+            $this->debug_plugin_version = get_option('woocommerce_bitpay_version');
 
             $this->log('BitPay Woocommerce payment plugin object constructor called. Server is PHP v' . $this->debug_php_version);
             $this->log('    [Info] $this->api_key            = ' . $this->api_key);
@@ -244,13 +244,13 @@ function woocommerce_bitpay_init()
                 'enabled' => array(
                     'title'   => __('Enable/Disable', 'woocommerce'),
                     'type'    => 'checkbox',
-                    'label'   => __('Enable Bitcoin via BitPay', 'bitpay'),
+                    'label'   => __('Enable Bitcoin Payments via BitPay', 'bitpay'),
                     'default' => 'yes'
                ),
                 'title' => array(
                     'title'       => __('Title', 'woocommerce'),
                     'type'        => 'text',
-                    'description' => __('This controls the title which the user sees during checkout.', 'woocommerce'),
+                    'description' => __('Controls the name of this payment method displayed to the customer during checkout.', 'woocommerce'),
                     'default'     => __('Bitcoin', 'bitpay'),
                     'desc_tip'    => true,
                ),
@@ -284,13 +284,13 @@ function woocommerce_bitpay_init()
                     'type'        => 'checkbox',
                     'label'       => __('Enable logging', 'woocommerce'),
                     'default'     => 'no',
-                    'description' => sprintf(__('Log BitPay events, such as IPN requests, inside <code>%s</code>', 'bitpay'), wc_get_log_file_path('bitpay')),
+                    'description' => sprintf(__('Log BitPay events, such as IPN requests, inside %s<', 'bitpay'), wc_get_log_file_path('bitpay')),
                     'desc_tip'    => true,
                ),
                 'support_details' => array(
 		            'title'       => __( 'Plugin & Support Information', 'woocommerce' ),
 		            'type'        => 'title',
-		            'description' => __('This plugin version is ' . $this->debug_plugin_version . ' and your PHP version is ' . $this->debug_php_version . '. If you need assistance, please contact support@bitpay.com.', 'woocommerce'),
+		            'description' => __('This plugin version is ' . get_option('woocommerce_bitpay_version') . ' and your PHP version is ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '. If you need assistance, please contact support@bitpay.com.  Thank you for using BitPay!',
 	           ),
            );
 
@@ -1277,7 +1277,7 @@ function woocommerce_bitpay_activate()
             }
         }
 
-        update_option('woocommerce_bitpay_version', '2.2.3');
+        update_option('woocommerce_bitpay_version', '2.2.4');
 
     } else {
         // Requirements not met, return an error message
